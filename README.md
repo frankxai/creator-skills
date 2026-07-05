@@ -1,4 +1,7 @@
-# Creator Skills — from Agentic Creator OS
+# Creator Skills — creative production, from Agentic Creator OS
+
+[![skills.sh](https://skills.sh/b/frankxai/creator-skills)](https://www.skills.sh/frankxai/creator-skills)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 You subscribed to five AI tools and still can't ship a video a day. The missing piece is routing, not another model.
 
@@ -6,7 +9,7 @@ You subscribed to five AI tools and still can't ship a video a day. The missing 
 npx skills add frankxai/creator-skills
 ```
 
-Agent skills for creators who run their production through Claude Code, Cursor, or any harness that reads `SKILL.md` — video routing, music prompting, grounded image generation, brand voice.
+One command, ~30 seconds. Works with Claude Code, Cursor, Gemini CLI, Windsurf, and Codex. Creative-production skills — video routing, music, image generation, brand voice — not marketing-ops.
 
 ## Catalog
 
@@ -49,7 +52,12 @@ elsewhere genuinely wins.
 ## Related lanes
 
 - [frankxai/skills](https://github.com/frankxai/skills) — the architect lane: MCP, orchestration, model routing, context engineering.
-- [frankx.ai](https://frankx.ai) — field notes, systems, and the newsletter.
+- [agentic-creator-os](https://github.com/frankxai/agentic-creator-os) — the full creator operating system these skills ship inside.
+- [claude-skills-library](https://github.com/frankxai/claude-skills-library) — the full 100+ skill catalog.
+
+## Newsletter
+
+One new skill every week, with the problem it solves. [Subscribe →](https://www.frankx.ai/newsletter?utm_source=github&utm_medium=readme&utm_campaign=creator-skills)
 
 ## License
 
