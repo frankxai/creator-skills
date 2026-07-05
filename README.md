@@ -11,17 +11,22 @@ npx skills add frankxai/creator-skills
 
 One command, ~30 seconds. Works with Claude Code, Cursor, Gemini CLI, Windsurf, and Codex. Creative-production skills — video routing, music, image generation, brand voice — not marketing-ops.
 
+**Start here:** [`production-review`](skills/reviews/production-review/SKILL.md) — a user-invoked skill that grills your video plan (hook, destination, consistency, cost) before you spend a credit, then hands the winning brief to the router.
+
 ## Catalog
 
-| Skill | Category | Fires when |
-|---|---|---|
-| [video-gen](skills/video/video-gen/SKILL.md) | video | any image/video request — classifies intent, dispatches engines, chains assembly and editing |
-| [video-engine-routing](skills/video/video-engine-routing/SKILL.md) | video | cost, volume, or capability forces an engine decision: subscription vs pay-per-use vs cloud ComfyUI |
-| [suno-prompt-architect](skills/music/suno-prompt-architect/SKILL.md) | music | writing Suno prompts that need commercial quality |
-| [suno-ai-mastery](skills/music/suno-ai-mastery/SKILL.md) | music | advanced Suno composition: genre systems, structure, vocals |
-| [acos-visual-gen](skills/images/acos-visual-gen/SKILL.md) | images | research-grounded infographics and educational visuals |
-| [arcanea-book-cover](skills/images/arcanea-book-cover/SKILL.md) | images | book covers designed from tension, emotion, and genre |
-| [brand-voice](skills/brand/brand-voice/SKILL.md) | brand | writing or reviewing anything that must sound like YOUR brand |
+Two kinds of skills. **User-invoked** ones you run deliberately — a review you start. **Model-invoked** ones fire on their own when the work matches.
+
+| Skill | Category | Invocation | Fires when |
+|---|---|---|---|
+| [production-review](skills/reviews/production-review/SKILL.md) | reviews | **user-invoked** | you ask to pressure-test a video/content plan before generating |
+| [video-gen](skills/video/video-gen/SKILL.md) | video | model-invoked | any image/video request — classifies intent, dispatches engines, chains assembly and editing |
+| [video-engine-routing](skills/video/video-engine-routing/SKILL.md) | video | model-invoked | cost, volume, or capability forces an engine decision: subscription vs pay-per-use vs cloud ComfyUI |
+| [suno-prompt-architect](skills/music/suno-prompt-architect/SKILL.md) | music | model-invoked | writing Suno prompts that need commercial quality |
+| [suno-ai-mastery](skills/music/suno-ai-mastery/SKILL.md) | music | model-invoked | advanced Suno composition: genre systems, structure, vocals |
+| [acos-visual-gen](skills/images/acos-visual-gen/SKILL.md) | images | model-invoked | research-grounded infographics and educational visuals |
+| [arcanea-book-cover](skills/images/arcanea-book-cover/SKILL.md) | images | model-invoked | book covers designed from tension, emotion, and genre |
+| [brand-voice](skills/brand/brand-voice/SKILL.md) | brand | model-invoked | writing or reviewing anything that must sound like YOUR brand |
 
 ## How the video lane works
 
