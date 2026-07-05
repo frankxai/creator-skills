@@ -45,7 +45,7 @@ Long-form walkthroughs of these pipelines, from the site:
 - [Faceless YouTube: ElevenLabs narration + Higgsfield b-roll](https://www.frankx.ai/blog/using-elevenlabs-for-faceless-youtube-channels-and-higgsfield-for-b-roll)
 
 These skills ship inside [Agentic Creator OS](https://github.com/frankxai/agentic-creator-os),
-the full creator operating system. Disclosure: I'm a Higgsfield Ambassador; Higgsfield links
+the full creator operating system — productized as the [ACOS Creator Kit ($47)](https://www.frankx.ai/acos?utm_source=github&utm_medium=readme&utm_campaign=creator-skills). Disclosure: I'm a Higgsfield Ambassador; Higgsfield links
 on frankx.ai may be affiliate links. The routing logic here sends you elsewhere whenever
 elsewhere genuinely wins.
 
