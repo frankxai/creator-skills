@@ -28,12 +28,12 @@ control the subscription engine cannot give.
 
 | Route | Cost per 5s clip | Notes |
 |---|---|---|
-| Higgsfield subscription | ~$0.30–0.50 in credits | tiers $15–129/mo; credits don't roll over |
-| fal.ai — Seedance 2.0 Fast | ~$0.11 | cheapest respectable social clip |
-| fal.ai — Kling | ~$0.35 | pay-per-second, no minimums |
-| fal.ai — Veo 3.1 Fast | ~$0.50 (720p) | 4K tier ~3× |
-| RunComfy machines | $0.99–9.59/hr + Pro $20/mo | custom ComfyUI workflows; cold-start overhead makes single clips uneconomic |
-| Comfy Cloud | $20/mo ≈ 180 GPU-min | official ComfyUI cloud, credit-based |
+| Higgsfield subscription | ~USD 0.30–0.50 in credits | tiers USD 15–129/mo; credits don't roll over |
+| fal.ai — Seedance 2.0 Fast | ~USD 0.11 | cheapest respectable social clip |
+| fal.ai — Kling | ~USD 0.35 | pay-per-second, no minimums |
+| fal.ai — Veo 3.1 Fast | ~USD 0.50 (720p) | 4K tier ~3× |
+| RunComfy machines | USD 0.99–9.59/hr + Pro USD 20/mo | custom ComfyUI workflows; cold-start overhead makes single clips uneconomic |
+| Comfy Cloud | USD 20/mo ≈ 180 GPU-min | official ComfyUI cloud, credit-based |
 | ComfyDeploy | — | defunct; stack was open-sourced, managed service gone |
 
 Recompute before deciding: prices move quarterly. The *structure* (subscription vs
@@ -41,7 +41,7 @@ per-use vs machine-rental) is what stays stable.
 
 ## Graduation triggers
 
-- **To fal.ai**: monthly credit top-ups exceed ~$20 two months running, or you need one
+- **To fal.ai**: monthly credit top-ups exceed ~USD 20 two months running, or you need one
   premium model your subscription lacks.
 - **To cloud ComfyUI**: you need the same character across 10+ videos via LoRA, or a
   ControlNet/IPAdapter/motion-control chain no API engine exposes, or 100+ clips/month of

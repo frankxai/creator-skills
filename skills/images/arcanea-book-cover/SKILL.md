@@ -91,8 +91,8 @@ TECHNICAL: 4K resolution, portrait ratio, book cover composition, cinematic dept
 ### Phase 4: GENERATE
 
 **Model routing:**
-- **DEFAULT: NB2** (`gemini-3.1-flash-image-preview`) — $0.02, portrait-native, best for covers
-- **PREMIUM** (only when user says "premium", "hero", "final", or "launch"): NB Pro (`nano-banana-pro-preview`) — $0.04
+- **DEFAULT: NB2** (`gemini-3.1-flash-image-preview`) — USD 0.02, portrait-native, best for covers
+- **PREMIUM** (only when user says "premium", "hero", "final", or "launch"): NB Pro (`nano-banana-pro-preview`) — USD 0.04
 
 **API call template:**
 
