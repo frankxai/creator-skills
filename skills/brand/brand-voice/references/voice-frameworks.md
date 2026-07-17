@@ -172,14 +172,14 @@ Read 5-10 samples and answer:
 
 After analysis, name 3-5 attributes using **verbs and specifics**, not adjectives:
 
-❌ Weak: "Conversational and authentic"
-✅ Strong: "Writes like a peer debrief, not a lecture — uses 'you' 3x more than 'I'"
+Weak: "Conversational and authentic"
+Strong: "Writes like a peer debrief, not a lecture — uses 'you' 3x more than 'I'"
 
-❌ Weak: "Direct and confident"
-✅ Strong: "Opens with the conclusion, explains after — never buries the lead"
+Weak: "Direct and confident"
+Strong: "Opens with the conclusion, explains after — never buries the lead"
 
-❌ Weak: "Educational"
-✅ Strong: "Teaches through specific examples, never through abstraction alone"
+Weak: "Educational"
+Strong: "Teaches through specific examples, never through abstraction alone"
 
 ---
 

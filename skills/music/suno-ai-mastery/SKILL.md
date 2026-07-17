@@ -1,6 +1,6 @@
 ---
 name: suno-ai-mastery
-description: Expert prompt engineering and music generation with Suno AI v4.5+ for professional-quality songs across all genres with advanced composition techniques
+description: Expert prompt engineering and music generation with Suno AI v4.5+ for professional-quality songs across all genres with advanced composition techniques. Use when producing full songs with Suno AI v4.5+ — platform features like Add Vocals, Persona, Extend, or Remaster, and genre-specific composition techniques.
 version: 2.0.0
 ---
 

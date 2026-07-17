@@ -377,19 +377,19 @@ Before finalizing a Suno prompt, verify:
 
 ## Common Pitfalls to Avoid
 
-❌ **Too Generic**
+**Too Generic**
 "Relaxing music with piano"
 - Missing: mood depth, production, use case, specificity
 
-❌ **Over-Specified**
+**Over-Specified**
 "C major scale piano with exactly 4 chords, reverb at 2.3 seconds..."
 - Too technical, Suno can't control that detail level
 
-❌ **Contradictory Elements**
+**Contradictory Elements**
 "Energizing music for deep sleep"
 - Conflicting purposes
 
-❌ **Missing Purpose**
+**Missing Purpose**
 Technically perfect prompt but no clear use case
 - Lacks direction
 
