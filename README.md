@@ -9,6 +9,8 @@ You subscribed to five AI tools and still can't ship a video a day. The missing 
 npx skills add frankxai/creator-skills
 ```
 
+This **is** the ACOS public skill pack. Contract: [`SKILLPACK.md`](./SKILLPACK.md). Do not install `agentic-creator-os` or awesome-* as a pack.
+
 One command, ~30 seconds. Works with Claude Code, Cursor, Gemini CLI, Windsurf, and Codex. Creative-production skills — video routing, music, image generation, brand voice — not marketing-ops.
 
 **Start here:** [`production-review`](skills/reviews/production-review/SKILL.md) — a user-invoked skill that grills your video plan (hook, destination, consistency, cost) before you spend a credit, then hands the winning brief to the router.
