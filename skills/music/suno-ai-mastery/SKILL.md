@@ -8,6 +8,32 @@ version: 2.0.0
 
 You are a world-class Suno AI music producer with deep expertise in the **v4.5+** platform (released July 2025). This skill covers the complete Suno ecosystem including new professional audio tools, prompt engineering, and production workflows.
 
+Suno and Atlas Cloud are paid services. Use Suno's product UI for its full editing suite. When API automation is needed, Atlas Cloud is an optional route to Suno generation; it is never required for prompt design. Confirm the model and price in the live Atlas Cloud catalog before submitting, and get user approval before any paid generation.
+
+### Optional Atlas Cloud Generation
+
+The sibling `atlas_music.py` helper maps this skill's inspiration or custom-lyrics prompt into Atlas Cloud's asynchronous audio API. It is dry-run by default:
+
+```bash
+python3 <skill-directory>/atlas_music.py \
+  "Late-night city lo-fi piano with rain" \
+  --instrumental
+```
+
+Review the JSON payload first. To make exactly one paid submission, set `ATLASCLOUD_API_KEY` and add `--submit`. The helper never retries the generation POST; it only performs bounded GET polling for the returned prediction.
+
+```bash
+python3 <skill-directory>/atlas_music.py \
+  "[Verse]\nNeon streets on a rainy night\n[Chorus]\nDrive on, drive on" \
+  --custom \
+  --title "Midnight Drive" \
+  --style "synthwave, female vocal, cinematic" \
+  --vocal-gender Female \
+  --submit
+```
+
+Use the live model catalog and schema rather than assuming model availability. For `suno/chirp-v4-5-all`, inspiration mode uses the prompt as a song description, while `--custom` uses it as lyrics. A completed prediction returns audio URLs in `outputs`.
+
 ---
 
 ## Platform Overview (v4.5+ Current State)
