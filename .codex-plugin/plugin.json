@@ -1,0 +1,16 @@
+{
+  "name": "starlight-creator",
+  "version": "1.0.0",
+  "description": "Creative production routing, AI video pipelines, Suno music mastery, and brand voice architecture.",
+  "author": "Frank Riemer",
+  "skills": [
+    "skills/brand/brand-voice",
+    "skills/images/acos-visual-gen",
+    "skills/images/arcanea-book-cover",
+    "skills/music/suno-ai-mastery",
+    "skills/music/suno-prompt-architect",
+    "skills/reviews/production-review",
+    "skills/video/video-engine-routing",
+    "skills/video/video-gen"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/plugin.v1.json",
+  "name": "starlight-creator",
+  "version": "1.0.0",
+  "description": "Creative production routing, AI video pipelines, Suno music mastery, and brand voice architecture.",
+  "author": {
+    "name": "Frank Riemer",
+    "url": "https://frankx.ai",
+    "github": "frankxai"
+  },
+  "homepage": "https://github.com/frankxai/creator-skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frankxai/creator-skills.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "creator",
+    "video",
+    "video-routing",
+    "music",
+    "suno",
+    "brand-voice",
+    "agent-skills",
+    "agent-plugins"
+  ],
+  "skills": "./skills",
+  "runtimes": {
+    "codex": {
+      "supported": true,
+      "skills_dir": "./skills"
+    },
+    "claude": {
+      "supported": true,
+      "skills_dir": "./skills"
+    },
+    "grok": {
+      "supported": true,
+      "skills_dir": "./skills"
+    },
+    "antigravity": {
+      "supported": true,
+      "skills_dir": "./skills"
+    },
+    "cursor": {
+      "supported": true,
+      "skills_dir": "./skills"
+    }
+  }
+}
