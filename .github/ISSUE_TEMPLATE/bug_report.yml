@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a reproducible problem in this skill pack
+title: "Bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "For vulnerabilities, use Security → Report a vulnerability instead of this public form. Remove secrets and private media from examples."
+  - type: input
+    id: skill
+    attributes:
+      label: Skill, agent, and engine
+      description: Name the skill, agent, and relevant engine or service.
+      placeholder: "video-gen on Codex with Veo"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and reproduction steps
+      description: Include a small, shareable example and any relevant version information.
+    validations:
+      required: true
