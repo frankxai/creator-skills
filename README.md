@@ -11,6 +11,17 @@ npx skills add frankxai/creator-skills
 
 This **is** the ACOS public skill pack. Contract: [`SKILLPACK.md`](./SKILLPACK.md). Do not install `agentic-creator-os` or awesome-* as a pack.
 
+For Codex, use the same `npx skills add frankxai/creator-skills` command and select Codex when prompted. Codex plugins use a separate marketplace flow; this repository is a skills pack.
+
+## Join the community
+
+- [Ask a question or share a finished workflow](https://github.com/frankxai/claude-skills-library/discussions) in the shared skills discussion space. Name the skill and destination, and share only work you have permission to show.
+- [Report a bug or request a skill](https://github.com/frankxai/creator-skills/issues/new/choose) in this repository.
+- [Contribute an improvement](CONTRIBUTING.md) with a reproducible example and clear service or cost requirements.
+- [Report a vulnerability privately](SECURITY.md). Keep exploit details out of public threads.
+
+Our [code of conduct](CODE_OF_CONDUCT.md) applies to participation. [Support routes](SUPPORT.md) explain where each request belongs.
+
 One command, ~30 seconds. Works with Claude Code, Cursor, Gemini CLI, Windsurf, and Codex. Creative-production skills — video routing, music, image generation, brand voice — not marketing-ops.
 
 **Start here:** [`production-review`](skills/reviews/production-review/SKILL.md) — a user-invoked skill that grills your video plan (hook, destination, consistency, cost) before you spend a credit, then hands the winning brief to the router.
