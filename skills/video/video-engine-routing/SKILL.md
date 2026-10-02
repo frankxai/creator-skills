@@ -1,7 +1,7 @@
 ---
 name: video-engine-routing
 description: Decide WHERE video/image generation runs when cost, volume, or capability forces a choice - subscription credits vs pay-per-use APIs vs cloud ComfyUI. Use when asked "which video engine should I use", "is Higgsfield/fal/RunComfy worth it", "credits ran out", "cheapest way to generate N clips", "do I need ComfyUI", "should I run this locally", or when the video-gen skill escalates a budget or capability ceiling. Contains the pricing table, graduation triggers, and the never-local rule for iGPU machines.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # video-engine-routing — when you outgrow your default engine
@@ -13,7 +13,8 @@ control the subscription engine cannot give.
 ## The decision tree
 
 1. **Under ~50 clips/month, mixed styles, no custom pipeline** → stay on the subscription
-   engine (Higgsfield or equivalent). Sunk cost, routing across many models, zero ops.
+   engine you already pay for (an all-in-one such as Higgsfield, or an equivalent). Sunk cost,
+   routing across many models, zero ops.
 2. **Bursty overflow or budget clips at volume** → pay-per-use API (fal.ai). No subscription,
    no credit expiry, cheapest per-clip for budget models.
 3. **Custom pipeline: LoRA character consistency at batch scale, ControlNet/IPAdapter
@@ -26,9 +27,12 @@ control the subscription engine cannot give.
 
 ## Pricing reference (mid-2026, one 5-second 1080p clip)
 
+These are the author's working estimates, not vendor quotes, and none is sourced here. Open each
+vendor's current pricing page before you decide.
+
 | Route | Cost per 5s clip | Notes |
 |---|---|---|
-| Higgsfield subscription | ~$0.30–0.50 in credits | tiers $15–129/mo; credits don't roll over |
+| All-in-one subscription (Higgsfield) | ~$0.30–0.50 in credits | tiers $15–129/mo; credits don't roll over |
 | fal.ai — Seedance 2.0 Fast | ~$0.11 | cheapest respectable social clip |
 | fal.ai — Kling | ~$0.35 | pay-per-second, no minimums |
 | fal.ai — Veo 3.1 Fast | ~$0.50 (720p) | 4K tier ~3× |
@@ -62,6 +66,6 @@ per-use vs machine-rental) is what stays stable.
 The single-dispatcher/model-leaf routing pattern used by `video-gen` is adapted from the
 router design in agentspace-so's RunComfy skill pack — pattern absorbed, dependency skipped.
 
-Disclosure: I am a Higgsfield Ambassador; Higgsfield links on my site may be affiliate links.
-This skill's routing logic does not depend on that relationship — the decision tree sends
-you to fal.ai or ComfyUI whenever those genuinely win.
+Disclosure: the author is a Higgsfield Ambassador, and Higgsfield links on frankx.ai may be
+affiliate links. The routing logic here does not depend on that relationship: the decision tree
+sends you to fal.ai or ComfyUI whenever those genuinely win.

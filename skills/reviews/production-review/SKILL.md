@@ -35,7 +35,7 @@ SOFT if format and destination don't match; name the reframe.
 
 ### 3. Identity & consistency
 - Does anything need to stay consistent across shots — a face, a product, a character?
-- If a face: is a trained Soul identity needed (→ `higgsfield-soul-id`), or is one-shot fine?
+- If a face: is a trained identity needed (a Soul ID on Higgsfield, a LoRA on ComfyUI, or whatever your engine offers), or is one-shot fine?
 - If a product: same object every frame, or will it drift and break trust?
 
 Flag the consistency requirement so the router picks the right engine, not a cheaper one that drifts.
