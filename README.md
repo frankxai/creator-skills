@@ -44,9 +44,10 @@ Two kinds of skills. **User-invoked** ones you run deliberately — a review you
 ## How the video lane works
 
 `video-gen` is a router: it classifies the request (deliverable × identity-consistency ×
-destination) and dispatches to whichever engines you have installed — Higgsfield CLI skills
-for generation, Nano Banana for reference edits, HyperFrames for HTML compositions and
-captions, Descript for text-based editing. Those engine skills ship from their vendors;
+destination) and dispatches to whichever engines you have installed — an all-in-one engine
+such as the Higgsfield CLI skills, or another image or video engine, for generation; Nano
+Banana for reference edits; HyperFrames for HTML compositions and captions; Descript for
+text-based editing. Those engine skills ship from their vendors;
 this repo deliberately does not republish them. Install the engines you pay for, and the
 router uses what it finds.
 
