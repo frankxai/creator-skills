@@ -2,6 +2,16 @@
 
 Public skills catalog. Everything here ships to strangers' machines via `npx skills add frankxai/creator-skills`.
 
+## Architecture Stack (canonical)
+
+Before recommending or choosing technology, hosting, AI gateways, agent runtimes, databases, or storage:
+
+1. Fetch and follow the living document:  
+   https://github.com/frankxai/frankx-starlight-command/blob/main/ARCHITECTURE-STACK.md
+2. Use the Architectural Checker prompt inside that file for any new surface.
+3. Record repo-specific exceptions as short ADRs and link them back to the canonical file.
+4. Do not invent a parallel stack doctrine in this repo.
+
 ## Layout
 
 - `skills/<category>/<name>/SKILL.md` — one skill per folder. Categories: video, music, images, brand.
