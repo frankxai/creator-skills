@@ -8,7 +8,30 @@ version: 2.0.0
 
 You are a world-class Suno AI music producer with deep expertise in the **v4.5+** platform (released July 2025). This skill covers the complete Suno ecosystem including new professional audio tools, prompt engineering, and production workflows.
 
-Suno and Atlas Cloud are paid services. Use Suno's product UI for its full editing suite. When API automation is needed, Atlas Cloud is an optional route to Suno generation; it is never required for prompt design. Confirm the model and price in the live Atlas Cloud catalog before submitting, and get user approval before any paid generation.
+Suno, Atlas Cloud, and MuAPI are paid services. Use Suno's product UI for its full editing suite. When API automation is needed, Atlas Cloud and MuAPI are optional routes to Suno generation; they are never required for prompt design. Confirm the model and price in the live provider catalog before submitting, and get user approval before any paid generation.
+
+### Optional MuAPI Generation
+
+The sibling `muapi_music.py` helper maps a song idea and style into MuAPI's asynchronous Suno API. It is dry-run by default:
+
+```bash
+python3 <skill-directory>/muapi_music.py \\
+  "Late-night city lo-fi piano with rain" \\
+  --style "lo-fi hip-hop, mellow piano" \\
+  --instrumental
+```
+
+Review the JSON payload first. To make exactly one paid submission, set `MUAPI_API_KEY` and add `--submit`. The helper never retries the generation POST; it only performs bounded GET polling for the returned request.
+
+```bash
+python3 <skill-directory>/muapi_music.py \\
+  "A hopeful song about finding your way home" \\
+  --style "indie pop, warm guitar, layered vocals" \\
+  --title "Way Home" \\
+  --submit
+```
+
+Use the live MuAPI model schema before generation. The current catalog lists this generation at $0.09 per request; confirm the price before submission. The completed result includes generated audio in `outputs`.
 
 ### Optional Atlas Cloud Generation
 
