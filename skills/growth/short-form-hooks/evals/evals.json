@@ -5,7 +5,7 @@
       "id": 1,
       "prompt": "I post 45-second cooking Reels and TikToks. People keep swiping away in the first couple of seconds. Here is my current opening: 'Hey guys, welcome back, today we're making a 15-minute chickpea curry.' Write me better hooks and tell me how to test them.",
       "expected_output": "Instructs checking each platform's official analytics help pages for the early drop-off metric and any non-follower test feature, recording URL and read date, and marks anything unconfirmed. Writes the promise sentence and the payoff timestamp. Identifies the greeting as a warm-up that delays the promise. Writes at least eight hooks across different patterns, each with first frame, first spoken line and on-screen text that works muted. Scores them, keeps three, and writes a bridge for each. Gives a test plan that changes only the first two seconds, uses early drop-off rather than total views, compares against the creator's own baseline, sets a minimum view count and keep or drop rules before posting, and adds a hook bank row.",
-      "assertions": [
+      "expectations": [
         "Instructs grounding platform metrics on official pages with read dates",
         "Names the greeting as a warm-up to cut",
         "Writes at least eight hooks using varied patterns",
@@ -23,7 +23,7 @@
       "id": 2,
       "prompt": "Give me a hook for my skincare Short: 'Dermatologists HATE this one trick that cured my acne overnight.' The video is just my normal morning routine.",
       "expected_output": "Flags the hook as false because the video does not show an overnight cure or dermatologist reaction, and explains that a broken promise loses viewers after the hook and erodes trust. Avoids unproven medical claims. Asks for or infers the real promise of the routine video and writes truthful hooks that the content pays off.",
-      "assertions": [
+      "expectations": [
         "Rejects the hook because the video does not pay it off",
         "Does not make unproven medical or cure claims",
         "Writes alternative hooks grounded in what the video actually shows"
@@ -34,7 +34,7 @@
       "id": 3,
       "prompt": "I posted the same Short with two different hooks, one on TikTok and one on YouTube Shorts. The YouTube one got 3x the views. So that hook is better, right?",
       "expected_output": "Explains the comparison is confounded because the platforms have different audiences, distribution and metrics, so it cannot isolate the hook. Notes total views is not the deciding metric. Recommends a proper test: same platform, only the opening changed, early drop-off against the creator's baseline, minimum views per variant, rules decided in advance.",
-      "assertions": [
+      "expectations": [
         "Explains the cross-platform comparison does not isolate the hook",
         "Notes that total views is a weak deciding metric",
         "Recommends testing on one platform with only the opening changed",
