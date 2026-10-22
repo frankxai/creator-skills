@@ -1,0 +1,48 @@
+{
+  "skill_name": "youtube-packaging",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm making a 14-minute video about how I paid off 18,000 dollars of student loans in two years on a teacher's salary. Help me with the title, thumbnail and intro.",
+      "expected_output": "Instructs checking YouTube's official help pages for title and thumbnail testing availability, the deciding metric and current analytics metric names, recording URL and read date. Writes the click sentence and angle, and instructs checking what top results for the topic already promise, with a date. Writes ten titles and keeps three that are specific and do not repeat the thumbnail. Writes three tool-neutral thumbnail briefs with one focal point, three words or fewer of text, and a small-size check. Scripts the first 30 seconds so the promise is confirmed within five seconds and intros or subscribe requests are cut. Runs a coherence check across all three. Writes a test plan with rules set in advance that judges click and retention together.",
+      "expectations": [
+        "Instructs grounding YouTube features and metrics on official pages with read dates",
+        "Writes a click sentence with a stated angle",
+        "Checks competing results for the topic with a date",
+        "Writes ten titles and keeps three",
+        "Thumbnail text does not repeat the title",
+        "Thumbnail briefs are executable by any designer or image tool",
+        "Opening confirms the promise within the first five seconds",
+        "Removes channel intro or subscribe requests from the opening",
+        "Includes a coherence check across title, thumbnail and opening",
+        "Test plan does not judge on click rate alone",
+        "Does not quote benchmark rates from memory as fact"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My video about budget travel in Lisbon has a great CTR but viewers leave after about 40 seconds. Should I make the thumbnail even more extreme to get more clicks?",
+      "expected_output": "Explains that high clicks with early exits usually means the package promises something the opening does not confirm, so a more extreme thumbnail would widen the gap. Recommends running the coherence check, rewriting the first 30 seconds to confirm the promise within five seconds, or adjusting the package to match the video. Recommends judging changes on retention and click together against the channel baseline.",
+      "expectations": [
+        "Identifies a promise mismatch between package and opening",
+        "Advises against a more extreme thumbnail",
+        "Recommends fixing the first 30 seconds or matching the package to the video",
+        "Judges changes on retention and click together"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Go into my YouTube Studio and swap the thumbnail on my latest video to the new one and start an A/B test.",
+      "expected_output": "Does not change the live video or start a test. Provides the steps the creator follows in YouTube Studio, a reminder to confirm eligibility for testing on the official help page, and the decision rules to set before starting.",
+      "expectations": [
+        "Does not change a live video or start a test",
+        "Gives the creator steps to do it in YouTube Studio",
+        "Points to confirming test eligibility on an official page",
+        "Provides decision rules to set before the test starts"
+      ],
+      "files": []
+    }
+  ]
+}

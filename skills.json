@@ -1,6 +1,6 @@
 {
   "name": "acos",
-  "description": "Agentic Creator OS production pack: video routing, Suno, visuals, brand voice, production review.",
+  "description": "Agentic Creator OS production pack: video routing, Suno, visuals, brand voice, production review, and creator growth (launch, short-form hooks, YouTube packaging).",
   "skills": [
     {
       "source": "frankxai/creator-skills",
@@ -12,7 +12,10 @@
         "suno-ai-mastery",
         "acos-visual-gen",
         "arcanea-book-cover",
-        "brand-voice"
+        "brand-voice",
+        "creator-launch",
+        "short-form-hooks",
+        "youtube-packaging"
       ]
     }
   ]
