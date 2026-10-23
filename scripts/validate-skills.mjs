@@ -1,9 +1,28 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 
 const ROOT = path.join(import.meta.dirname, '..', 'skills');
 const ALLOWED_KEYS = new Set(['name', 'description', 'version', 'argument-hint', 'allowed-tools']);
+
+let cliExists = false;
+try {
+  execSync('claude --version', { stdio: 'ignore' });
+  cliExists = true;
+} catch (e) {
+  // cli not found
+}
+
+if (cliExists) {
+  try {
+    execSync('claude plugin validate --strict skills', { stdio: 'inherit' });
+  } catch (e) {
+    process.exit(1);
+  }
+}
+
+const seenNames = new Set();
 const BANNED = [
   [/[A-Z]:\\Users\\/i, 'windows user path'],
   [/\/c\/Users\//i, 'msys user path'],
@@ -58,6 +77,12 @@ for (const category of fs.readdirSync(ROOT)) {
       if (!ALLOWED_KEYS.has(k)) fail(skillFile, `disallowed frontmatter key: ${k}`);
     }
     if (fields.name !== name) fail(skillFile, `frontmatter name "${fields.name}" must equal folder name "${name}"`);
+
+    if (seenNames.has(fields.name)) {
+      fail(skillFile, `duplicate skill name: ${fields.name}`);
+    }
+    seenNames.add(fields.name);
+
     const desc = (fields.description ?? '').replace(/^["'|>\s]+|["']$/g, '');
     if (desc.length < 20) fail(skillFile, 'description missing or too short');
     if (desc.length > 1024) fail(skillFile, 'description over 1024 chars');
