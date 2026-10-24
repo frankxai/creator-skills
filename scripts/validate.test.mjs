@@ -96,3 +96,42 @@ describe('yaml parsing edge cases', () => {
     assert.strictEqual(runValidator(root), 0);
   });
 });
+
+describe('review edge cases', () => {
+  let tmpDir;
+
+  before(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'skills-test-review-'));
+  });
+
+  after(() => {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  const setupFixtureNested = (name, relativePath, frontmatter) => {
+    const dir = path.join(tmpDir, name, relativePath);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'SKILL.md'), `---\n${frontmatter}\n---`);
+    return path.join(tmpDir, name);
+  };
+
+  test('comment with quote', () => {
+    const root = setupFixtureNested('yaml-quotes', 'cat/skill-hash', 'name: skill-hash\ndescription: "This is a valid # description of a skill."');
+    assert.strictEqual(runValidator(root), 0);
+  });
+
+  test('standalone comment between fields', () => {
+    const root = setupFixtureNested('yaml-comment', 'cat/skill-comment', 'name: skill-comment\n# standalone comment\ndescription: This is a twenty character description.');
+    assert.strictEqual(runValidator(root), 0);
+  });
+
+  test('nested skills', () => {
+    const root = setupFixtureNested('yaml-nested', 'cat/subcat/subsubcat/skill-nested', 'name: skill-nested\ndescription: This is a twenty character description.');
+    assert.strictEqual(runValidator(root), 0);
+  });
+
+  test('nested skills failure', () => {
+    const root = setupFixtureNested('yaml-nested-fail', 'cat/subcat/subsubcat/skill-nested-f', 'name: wrong-name\ndescription: This is a twenty character description.');
+    assert.strictEqual(runValidator(root), 1);
+  });
+});
