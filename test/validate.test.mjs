@@ -288,6 +288,24 @@ test('indentationless list on other keys is ignored, rejected on name/descriptio
   );
 });
 
+test('anchors, aliases, tags and reserved indicators are rejected unquoted', () => {
+  const msg = 'YAML anchors, aliases and tags are not supported';
+  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: &abcdefghijklmnopqrst short\n---\n'), msg);
+  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: *missing_anchor_long_enough\n---\n'), msg);
+  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: !!str a sufficiently long description\n---\n'), msg);
+  expectFail((root) => skill(root, 'a', '---\nname: &x a\ndescription: ' + GOOD_DESC + '\n---\n'), msg);
+  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: @' + GOOD_DESC + '\n---\n'), msg);
+  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: %' + GOOD_DESC + '\n---\n'), msg);
+  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: `' + GOOD_DESC + '\n---\n'), msg);
+});
+
+test('quoted value starting with & passes', () => {
+  withTree(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: "&${GOOD_DESC}"\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
 test('unterminated quote and trailing junk after quote are rejected', () => {
   expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\n---\n`), 'unterminated quoted string');
   expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}" junk\n---\n`), 'unexpected text after quoted value');

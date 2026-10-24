@@ -74,6 +74,9 @@ function parseScalar(raw) {
     if (tail.startsWith('#') && !/\s/.test(t[i + 1] ?? '')) return { error: 'unexpected text after quoted value' };
     return { value };
   }
+  if (/^[&*!%@`]/.test(t)) {
+    return { error: 'YAML anchors, aliases and tags are not supported; quote the value if the character is literal' };
+  }
   let plain = t;
   for (let i = 0; i < t.length; i++) {
     if (t[i] === '#' && (i === 0 || /\s/.test(t[i - 1]))) {
