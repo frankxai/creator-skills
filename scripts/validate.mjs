@@ -74,10 +74,17 @@ function parseScalar(raw) {
     if (tail.startsWith('#') && !/\s/.test(t[i + 1] ?? '')) return { error: 'unexpected text after quoted value' };
     return { value };
   }
+  let plain = t;
   for (let i = 0; i < t.length; i++) {
-    if (t[i] === '#' && (i === 0 || /\s/.test(t[i - 1]))) return { value: t.slice(0, i).trim() };
+    if (t[i] === '#' && (i === 0 || /\s/.test(t[i - 1]))) {
+      plain = t.slice(0, i).trim();
+      break;
+    }
   }
-  return { value: t };
+  if (/:(\s|$)/.test(plain)) {
+    return { error: 'unquoted value contains ": " (invalid YAML); wrap the value in quotes' };
+  }
+  return { value: plain };
 }
 
 // Returns { fields, errors } (errors: strings naming the key) or { error } for
@@ -99,6 +106,15 @@ export function parseFrontmatter(raw) {
     if (line.trim() === '' || line.trim().startsWith('#')) continue;
     if (/^\s/.test(line)) {
       if (current && STRICT_KEYS.has(current) && !rejected.has(current)) {
+        rejected.add(current);
+        errors.push('key "' + current + '": multiline values are not supported');
+        delete fields[current];
+      }
+      continue;
+    }
+    if (/^-(\s|$)/.test(line) && current) {
+      // Indentationless block sequence belonging to the previous key.
+      if (STRICT_KEYS.has(current) && !rejected.has(current)) {
         rejected.add(current);
         errors.push('key "' + current + '": multiline values are not supported');
         delete fields[current];

@@ -258,6 +258,36 @@ test('duplicate keys are rejected', () => {
   );
 });
 
+test('unquoted value containing ": " is rejected with a quoting hint', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: Use this skill when: writing articles.\n---\n'),
+    'wrap the value in quotes',
+  );
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: A long enough description ending with colon:\n---\n'),
+    'wrap the value in quotes',
+  );
+  // Quoted, or colon without following space, is fine.
+  withTree(
+    (root) => {
+      skill(root, 'a', '---\nname: a\ndescription: "Use this skill when: writing articles."\n---\n');
+      skill(root, 'b', '---\nname: b\ndescription: See https://example.com/path for the details\n---\n');
+    },
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('indentationless list on other keys is ignored, rejected on name/description', () => {
+  withTree(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\nallowed-tools:\n- Read\n- Write\nversion: 1.0.0\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription:\n- one\n- two\n---\n`),
+    'key "description": multiline values are not supported',
+  );
+});
+
 test('unterminated quote and trailing junk after quote are rejected', () => {
   expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\n---\n`), 'unterminated quoted string');
   expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}" junk\n---\n`), 'unexpected text after quoted value');
