@@ -299,6 +299,23 @@ test('malformed YAML (unquoted ": ", bad quote, trailing junk) is rejected', () 
   expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}" junk\n---\n`), 'invalid YAML frontmatter');
 });
 
+test('indented --- inside a block scalar is content, not the closing fence', () => {
+  const body = (extra) => `---\nname: a\ndescription: |\n  ${GOOD_DESC}\n  ---\n  ${extra}\n---\n\n# body\n`;
+  // Short: whole block is the description, so it passes.
+  withTree(
+    (root) => skill(root, 'a', body('tail')),
+    (root) => assert.equal(run(root).status, 0),
+  );
+  // Long: content after the indented --- counts, so the length check fails.
+  expectFail((root) => skill(root, 'a', body('x'.repeat(1100))), 'outside 20-1024');
+  // Trailing spaces on a fence are allowed; leading spaces are not a fence.
+  withTree(
+    (root) => skill(root, 'a', `---  \nname: a\ndescription: ${GOOD_DESC}\n---\t\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+  expectFail((root) => skill(root, 'a', `  ---\nname: a\ndescription: ${GOOD_DESC}\n---\n`), 'missing frontmatter');
+});
+
 test('frontmatter that is not a mapping is rejected', () => {
   expectFail((root) => skill(root, 'a', '---\n- one\n- two\n---\n'), 'frontmatter must be a YAML mapping');
 });

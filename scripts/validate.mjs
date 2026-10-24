@@ -27,8 +27,11 @@ function findSkillFiles(dir) {
 export function parseFrontmatter(raw) {
   const text = raw.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
   const lines = text.split('\n');
-  if (lines[0].trim() !== '---') return { errors: ['missing frontmatter (file must start with ---)'] };
-  const end = lines.findIndex((l, i) => i > 0 && l.trim() === '---');
+  // Fences are exactly --- at column zero (trailing spaces allowed); an
+  // indented --- belongs to the YAML content (e.g. inside a block scalar).
+  const FENCE = /^---[ \t]*$/;
+  if (!FENCE.test(lines[0])) return { errors: ['missing frontmatter (file must start with ---)'] };
+  const end = lines.findIndex((l, i) => i > 0 && FENCE.test(l));
   if (end === -1) return { errors: ['unterminated frontmatter (no closing ---)'] };
   const doc = YAML.parseDocument(lines.slice(1, end).join('\n'), { uniqueKeys: true });
   if (doc.errors.length > 0) {
