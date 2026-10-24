@@ -8,7 +8,7 @@ import { join, relative, basename, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const MIN_DESC = 20;
-const MAX_DESC = 400;
+const MAX_DESC = 1024;
 
 function findSkillFiles(dir) {
   const out = [];

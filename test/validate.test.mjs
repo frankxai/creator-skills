@@ -83,15 +83,15 @@ test('description too short exits 1', () => {
   expectFail((root) => skill(root, 'a', fm('a', 'too short')), 'description length 9');
 });
 
-test('description too long exits 1', () => {
-  expectFail((root) => skill(root, 'a', fm('a', 'x'.repeat(401))), 'description length 401');
+test('description of 1025 chars exits 1', () => {
+  expectFail((root) => skill(root, 'a', fm('a', 'x'.repeat(1025))), 'description length 1025');
 });
 
-test('description boundaries 20 and 400 pass', () => {
+test('description boundaries 20 and 1024 pass', () => {
   withTree(
     (root) => {
       skill(root, 'a', fm('a', 'x'.repeat(20)));
-      skill(root, 'b', fm('b', 'x'.repeat(400)));
+      skill(root, 'b', fm('b', 'x'.repeat(1024)));
     },
     (root) => assert.equal(run(root).status, 0),
   );
@@ -109,4 +109,8 @@ test('missing skills root exits 1', () => {
   const r = run(missing);
   assert.equal(r.status, 1);
   assert.ok(r.stderr.includes('skills root not found'), r.stderr);
+});
+
+test('description of 19 chars exits 1', () => {
+  expectFail((root) => skill(root, 'a', fm('a', 'x'.repeat(19))), 'description length 19');
 });
