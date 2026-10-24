@@ -6,22 +6,6 @@ import { execSync, execFileSync } from 'node:child_process';
 const ROOT = path.join(import.meta.dirname, '..', 'skills');
 const ALLOWED_KEYS = new Set(['name', 'description', 'version', 'argument-hint', 'allowed-tools']);
 
-let cliExists = false;
-try {
-  execSync('claude --version', { stdio: 'ignore' });
-  cliExists = true;
-} catch (e) {
-  // cli not found
-}
-
-if (cliExists) {
-  try {
-    execFileSync('claude', ['plugin', 'validate', '--strict', ROOT], { stdio: 'inherit' });
-  } catch (e) {
-    process.exit(1);
-  }
-}
-
 const seenNames = new Set();
 const BANNED = [
   [/[A-Z]:\\Users\\/i, 'windows user path'],
@@ -40,6 +24,25 @@ const fail = (file, msg) => {
   failures++;
   console.error(`FAIL ${path.relative(path.dirname(ROOT), file)}: ${msg}`);
 };
+
+let cliExists = false;
+try {
+  execSync('claude --version', { stdio: 'ignore' });
+  cliExists = true;
+} catch (e) {
+  // cli not found
+}
+
+if (cliExists) {
+  try {
+    const isWin = process.platform === 'win32';
+    const cmd = isWin ? 'claude.cmd' : 'claude';
+    execFileSync(cmd, ['plugin', 'validate', '--strict', ROOT], { stdio: 'inherit', shell: isWin });
+  } catch (e) {
+    failures++;
+    console.error('FAIL: claude plugin validate failed');
+  }
+}
 
 function* walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
