@@ -206,6 +206,58 @@ test('doubled single quote is a literal quote', () => {
   );
 });
 
+test('\\uXXXX escapes are decoded before counting length', () => {
+  // 4 escapes = 4 chars, even though the source text is 24 chars long.
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: "\\u0061\\u0062\\u0063\\u0064"\n---\n'),
+    'description length 4',
+  );
+  // 20 decoded chars passes (10 escapes + 10 literals).
+  withTree(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: "${'\\u0061'.repeat(10)}${'b'.repeat(10)}"\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('\\x and standard single-char escapes are decoded', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: "\\x41\\n\\t\\"\\\\\\/"\n---\n'),
+    'description length 6',
+  );
+});
+
+test('unsupported or malformed escapes are rejected', () => {
+  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC} \\q"\n---\n`), 'unsupported escape \\q');
+  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC} \\u12"\n---\n`), 'invalid \\u escape');
+  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\\\n---\n`), 'unterminated quoted string');
+});
+
+test('unquoted collections are rejected', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: [a sufficiently long description]\n---\n'),
+    'collections are not supported',
+  );
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: {a: sufficiently long description}\n---\n'),
+    'collections are not supported',
+  );
+  withTree(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: "[${GOOD_DESC}]"\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('duplicate keys are rejected', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\ndescription: ${GOOD_DESC} again\n---\n`),
+    'key "description": duplicate key',
+  );
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\nname: a\ndescription: ${GOOD_DESC}\n---\n`),
+    'key "name": duplicate key',
+  );
+});
+
 test('unterminated quote and trailing junk after quote are rejected', () => {
   expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\n---\n`), 'unterminated quoted string');
   expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}" junk\n---\n`), 'unexpected text after quoted value');

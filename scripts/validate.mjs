@@ -23,12 +23,20 @@ function findSkillFiles(dir) {
 
 const STRICT_KEYS = new Set(['name', 'description']);
 
+// YAML double-quoted escapes. Anything not listed here is rejected explicitly.
+const SIMPLE_ESCAPES = {
+  0: '\0', a: '\x07', b: '\b', t: '\t', n: '\n', v: '\v', f: '\f', r: '\r', e: '\x1b',
+  ' ': ' ', '"': '"', '/': '/', '\\': '\\', N: '\x85', _: '\xa0', L: ' ', P: ' ',
+};
+const HEX_ESCAPES = { x: 2, u: 4, U: 8 };
+
 // Parse one single-line scalar. Returns { value } or { error }.
 // Supports plain scalars (with trailing "# comment"), "double" quoted (backslash
 // escapes the next char) and 'single' quoted ('' is a literal quote).
 function parseScalar(raw) {
   const t = raw.trim();
   if (/^[>|]/.test(t)) return { error: 'multiline values are not supported (block scalar)' };
+  if (/^[[{]/.test(t)) return { error: 'collections are not supported (unquoted [ or { value)' };
   const q = t[0];
   if (q === '"' || q === "'") {
     let value = '';
@@ -36,8 +44,21 @@ function parseScalar(raw) {
     for (; i < t.length; i++) {
       const c = t[i];
       if (q === '"' && c === '\\') {
-        if (i + 1 >= t.length) break;
-        value += t[++i];
+        if (i + 1 >= t.length) return { error: 'unterminated quoted string' };
+        const e = t[++i];
+        if (e in SIMPLE_ESCAPES) {
+          value += SIMPLE_ESCAPES[e];
+        } else if (e in HEX_ESCAPES) {
+          const digits = t.slice(i + 1, i + 1 + HEX_ESCAPES[e]);
+          const cp = Number.parseInt(digits, 16);
+          if (digits.length !== HEX_ESCAPES[e] || !/^[0-9a-fA-F]+$/.test(digits) || cp > 0x10ffff) {
+            return { error: 'invalid \\' + e + ' escape in quoted string' };
+          }
+          value += String.fromCodePoint(cp);
+          i += HEX_ESCAPES[e];
+        } else {
+          return { error: 'unsupported escape \\' + e + ' in quoted string' };
+        }
       } else if (q === "'" && c === "'" && t[i + 1] === "'") {
         value += "'";
         i++;
@@ -71,6 +92,7 @@ export function parseFrontmatter(raw) {
   const fields = {};
   const errors = [];
   const rejected = new Set();
+  const seenKeys = new Set();
   let current = null;
   for (let i = 1; i < end; i++) {
     const line = lines[i];
@@ -90,6 +112,14 @@ export function parseFrontmatter(raw) {
       continue;
     }
     current = m[1];
+    if (seenKeys.has(current)) {
+      if (STRICT_KEYS.has(current)) {
+        rejected.add(current);
+        errors.push('key "' + current + '": duplicate key');
+      }
+      continue;
+    }
+    seenKeys.add(current);
     if (!STRICT_KEYS.has(current)) continue;
     const parsed = parseScalar(m[2] ?? '');
     if (parsed.error) {
