@@ -67,3 +67,32 @@ describe('validate.mjs', () => {
     assert.strictEqual(runValidator(root), 1);
   });
 });
+
+describe('yaml parsing edge cases', () => {
+  let tmpDir;
+
+  before(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'skills-test-yaml-'));
+  });
+
+  after(() => {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  const setupFixture = (name, category, skillName, frontmatter) => {
+    const dir = path.join(tmpDir, name, category, skillName);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'SKILL.md'), `---\n${frontmatter}\n---`);
+    return path.join(tmpDir, name);
+  };
+
+  test('handles quotes and comments in name', () => {
+    const root = setupFixture('yaml', 'cat', 'skill-quoted', 'name: "skill-quoted" # inline comment\ndescription: This is a twenty character description.');
+    assert.strictEqual(runValidator(root), 0);
+  });
+
+  test('handles block scalars in description', () => {
+    const root = setupFixture('yaml2', 'cat', 'skill-block', 'name: skill-block\ndescription: >-\n  This is a twenty character description.');
+    assert.strictEqual(runValidator(root), 0);
+  });
+});

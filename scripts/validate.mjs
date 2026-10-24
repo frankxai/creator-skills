@@ -10,6 +10,23 @@ if (!fs.existsSync(ROOT)) {
   process.exit(1);
 }
 
+function cleanYamlValue(val) {
+  if (!val) return '';
+  // Strip inline comments on the first line (they can't appear inside unquoted multiline block scalars in our simple parsing)
+  let lines = val.split('\n');
+  // Only strip comments if they are at the end of the line, preceded by a space or it's the only thing
+  lines[0] = lines[0].replace(/\s+#.*$/, '').trim();
+
+  // Strip YAML block scalar indicators (like >- or |+)
+  lines[0] = lines[0].replace(/^[>|][+-]?\s*/, '').trim();
+
+  let joined = lines.join('\n').trim();
+  // Strip surrounding quotes if present
+  joined = joined.replace(/^["']([\s\S]*)["']$/, '$1');
+  return joined.trim();
+}
+
+
 const errors = [];
 const seenNames = new Set();
 
@@ -47,17 +64,17 @@ for (const category of fs.readdirSync(ROOT)) {
     if (!fields.name) {
       errors.push(`${skillFile}: missing name in frontmatter`);
     } else {
-      if (fields.name !== name) {
-        errors.push(`${skillFile}: name mismatch (frontmatter: "${fields.name}", directory: "${name}")`);
+      const cleanName = cleanYamlValue(fields.name);
+      if (cleanName !== name) {
+        errors.push(`${skillFile}: name mismatch (frontmatter: "${cleanName}", directory: "${name}")`);
       }
-      if (seenNames.has(fields.name)) {
-        errors.push(`${skillFile}: duplicate skill name "${fields.name}"`);
+      if (seenNames.has(cleanName)) {
+        errors.push(`${skillFile}: duplicate skill name "${cleanName}"`);
       }
-      seenNames.add(fields.name);
+      seenNames.add(cleanName);
     }
 
-    let desc = fields.description || '';
-    desc = desc.replace(/^["'|>\s]+|["'\s]+$/g, ''); // strip quotes, block scalars, and whitespace
+    const desc = cleanYamlValue(fields.description || '');
 
     if (desc.length < 20) {
       errors.push(`${skillFile}: description too short (${desc.length} chars)`);
