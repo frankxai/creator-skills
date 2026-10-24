@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { execSync } from 'node:child_process';
+import { execSync, execFileSync } from 'node:child_process';
 
 const ROOT = path.join(import.meta.dirname, '..', 'skills');
 const ALLOWED_KEYS = new Set(['name', 'description', 'version', 'argument-hint', 'allowed-tools']);
@@ -16,7 +16,7 @@ try {
 
 if (cliExists) {
   try {
-    execSync('claude plugin validate --strict skills', { stdio: 'inherit' });
+    execFileSync('claude', ['plugin', 'validate', '--strict', ROOT], { stdio: 'inherit' });
   } catch (e) {
     process.exit(1);
   }
