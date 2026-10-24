@@ -2,7 +2,7 @@
 // Skill frontmatter validator. No dependencies, no shelling out.
 // Usage: node scripts/validate.mjs [skillsRoot]   (default: <repo>/skills)
 // Rules: frontmatter with name+description; name === directory name;
-// description 20..400 chars; names unique. Exit 1 on any failure.
+// description 20..1024 chars; names unique. Exit 1 on any failure.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, basename, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,31 +21,47 @@ function findSkillFiles(dir) {
   return out.sort();
 }
 
-function unquote(v) {
-  const t = v.trim();
-  if (t.length >= 2 && ((t[0] === '"' && t.at(-1) === '"') || (t[0] === "'" && t.at(-1) === "'"))) {
-    return t.slice(1, -1);
-  }
-  return t;
-}
+const STRICT_KEYS = new Set(['name', 'description']);
 
-// Strip a YAML trailing comment: a # at the start or preceded by whitespace,
-// ignoring any # inside a leading single- or double-quoted string.
-function stripComment(v) {
-  const t = v.trim();
-  let from = 0;
+// Parse one single-line scalar. Returns { value } or { error }.
+// Supports plain scalars (with trailing "# comment"), "double" quoted (backslash
+// escapes the next char) and 'single' quoted ('' is a literal quote).
+function parseScalar(raw) {
+  const t = raw.trim();
+  if (/^[>|]/.test(t)) return { error: 'multiline values are not supported (block scalar)' };
   const q = t[0];
   if (q === '"' || q === "'") {
-    const close = t.indexOf(q, 1);
-    if (close !== -1) from = close + 1;
+    let value = '';
+    let i = 1;
+    for (; i < t.length; i++) {
+      const c = t[i];
+      if (q === '"' && c === '\\') {
+        if (i + 1 >= t.length) break;
+        value += t[++i];
+      } else if (q === "'" && c === "'" && t[i + 1] === "'") {
+        value += "'";
+        i++;
+      } else if (c === q) {
+        break;
+      } else {
+        value += c;
+      }
+    }
+    if (i >= t.length) return { error: 'unterminated quoted string' };
+    const tail = t.slice(i + 1).trim();
+    if (tail !== '' && !tail.startsWith('#')) return { error: 'unexpected text after quoted value' };
+    if (tail.startsWith('#') && !/\s/.test(t[i + 1] ?? '')) return { error: 'unexpected text after quoted value' };
+    return { value };
   }
-  for (let i = from; i < t.length; i++) {
-    if (t[i] === '#' && (i === 0 || /\s/.test(t[i - 1]))) return t.slice(0, i).trim();
+  for (let i = 0; i < t.length; i++) {
+    if (t[i] === '#' && (i === 0 || /\s/.test(t[i - 1]))) return { value: t.slice(0, i).trim() };
   }
-  return t;
+  return { value: t };
 }
 
-// Returns { fields } or { error }.
+// Returns { fields, errors } (errors: strings naming the key) or { error } for
+// a broken frontmatter envelope. Only single-line key: value scalars are
+// supported for name and description; anything else there is rejected.
 export function parseFrontmatter(raw) {
   const text = raw.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
   const lines = text.split('\n');
@@ -53,24 +69,37 @@ export function parseFrontmatter(raw) {
   const end = lines.findIndex((l, i) => i > 0 && l.trim() === '---');
   if (end === -1) return { error: 'unterminated frontmatter (no closing ---)' };
   const fields = {};
+  const errors = [];
+  const rejected = new Set();
+  let current = null;
   for (let i = 1; i < end; i++) {
-    const m = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(lines[i]);
-    if (!m) continue;
-    const key = m[1];
-    const rest = stripComment(m[2]);
-    if (/^[>|][+-]?$/.test(rest.trim())) {
-      const block = [];
-      while (i + 1 < end && (/^\s/.test(lines[i + 1]) || lines[i + 1] === '')) block.push(lines[++i].trim());
-      fields[key] = (rest.trim().startsWith('>') ? block.join(' ') : block.join('\n')).trim();
-    } else if (rest === '') {
-      const block = [];
-      while (i + 1 < end && /^\s+\S/.test(lines[i + 1])) block.push(lines[++i].trim());
-      fields[key] = block.join(' ');
+    const line = lines[i];
+    if (line.trim() === '' || line.trim().startsWith('#')) continue;
+    if (/^\s/.test(line)) {
+      if (current && STRICT_KEYS.has(current) && !rejected.has(current)) {
+        rejected.add(current);
+        errors.push('key "' + current + '": multiline values are not supported');
+        delete fields[current];
+      }
+      continue;
+    }
+    const m = /^([A-Za-z0-9_-]+):(?:\s+(.*))?$/.exec(line);
+    if (!m) {
+      errors.push('line ' + (i + 1) + ': unsupported frontmatter syntax');
+      current = null;
+      continue;
+    }
+    current = m[1];
+    if (!STRICT_KEYS.has(current)) continue;
+    const parsed = parseScalar(m[2] ?? '');
+    if (parsed.error) {
+      rejected.add(current);
+      errors.push('key "' + current + '": ' + parsed.error);
     } else {
-      fields[key] = unquote(rest);
+      fields[current] = parsed.value;
     }
   }
-  return { fields };
+  return { fields, errors };
 }
 
 export function validate(root) {
@@ -92,9 +121,11 @@ export function validate(root) {
       failures.push(`${rel}: ${parsed.error}`);
       continue;
     }
+    for (const e of parsed.errors) failures.push(`${rel}: ${e}`);
     const { name, description } = parsed.fields;
-    if (!name) failures.push(`${rel}: frontmatter missing name`);
-    if (!description) failures.push(`${rel}: frontmatter missing description`);
+    const bad = (k) => parsed.errors.some((e) => e.startsWith(`key "${k}"`));
+    if (!name && !bad('name')) failures.push(`${rel}: frontmatter missing name`);
+    if (!description && !bad('description')) failures.push(`${rel}: frontmatter missing description`);
     if (name) {
       const dir = basename(dirname(file));
       if (name !== dir) failures.push(`${rel}: name "${name}" does not match directory "${dir}"`);

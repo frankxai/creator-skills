@@ -153,3 +153,60 @@ test('hash without preceding whitespace is part of the value', () => {
     'description length 7',
   );
 });
+
+test('plain multiline description is rejected, not truncated', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription:\n  ${GOOD_DESC}\n  second line\n---\n`),
+    'key "description": multiline values are not supported',
+  );
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\n  continued here\n---\n`),
+    'key "description": multiline values are not supported',
+  );
+});
+
+test('block scalars are rejected for name and description', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: >\n  ${GOOD_DESC}\n---\n`),
+    'key "description": multiline values are not supported',
+  );
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: |-\n  ${GOOD_DESC}\n---\n`),
+    'key "description": multiline values are not supported',
+  );
+});
+
+test('multiline value on other keys is ignored', () => {
+  withTree(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\nallowed-tools:\n  - Bash\n  - Read\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('escaped double quote does not end the string', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: "ab \\" # cd"\n---\n`),
+    'description length 9',
+  );
+  withTree(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC} say \\"hi\\" # ok" # c\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('doubled single quote is a literal quote', () => {
+  // Value is 32 chars (valid); truncating at the # would leave 7 and fail.
+  withTree(
+    (root) => skill(root, 'a', "---\nname: a\ndescription: 'short '' # sufficiently long text'\n---\n"),
+    (root) => assert.equal(run(root).status, 0),
+  );
+  expectFail(
+    (root) => skill(root, 'a', "---\nname: a\ndescription: 'ab '' # cd'\n---\n"),
+    'description length 9',
+  );
+});
+
+test('unterminated quote and trailing junk after quote are rejected', () => {
+  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\n---\n`), 'unterminated quoted string');
+  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}" junk\n---\n`), 'unexpected text after quoted value');
+});
