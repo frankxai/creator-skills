@@ -154,28 +154,6 @@ test('hash without preceding whitespace is part of the value', () => {
   );
 });
 
-test('plain multiline description is rejected, not truncated', () => {
-  expectFail(
-    (root) => skill(root, 'a', `---\nname: a\ndescription:\n  ${GOOD_DESC}\n  second line\n---\n`),
-    'key "description": multiline values are not supported',
-  );
-  expectFail(
-    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\n  continued here\n---\n`),
-    'key "description": multiline values are not supported',
-  );
-});
-
-test('block scalars are rejected for name and description', () => {
-  expectFail(
-    (root) => skill(root, 'a', `---\nname: a\ndescription: >\n  ${GOOD_DESC}\n---\n`),
-    'key "description": multiline values are not supported',
-  );
-  expectFail(
-    (root) => skill(root, 'a', `---\nname: a\ndescription: |-\n  ${GOOD_DESC}\n---\n`),
-    'key "description": multiline values are not supported',
-  );
-});
-
 test('multiline value on other keys is ignored', () => {
   withTree(
     (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\nallowed-tools:\n  - Bash\n  - Read\n---\n`),
@@ -226,79 +204,6 @@ test('\\x and standard single-char escapes are decoded', () => {
   );
 });
 
-test('unsupported or malformed escapes are rejected', () => {
-  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC} \\q"\n---\n`), 'unsupported escape \\q');
-  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC} \\u12"\n---\n`), 'invalid \\u escape');
-  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\\\n---\n`), 'unterminated quoted string');
-});
-
-test('unquoted collections are rejected', () => {
-  expectFail(
-    (root) => skill(root, 'a', '---\nname: a\ndescription: [a sufficiently long description]\n---\n'),
-    'collections are not supported',
-  );
-  expectFail(
-    (root) => skill(root, 'a', '---\nname: a\ndescription: {a: sufficiently long description}\n---\n'),
-    'collections are not supported',
-  );
-  withTree(
-    (root) => skill(root, 'a', `---\nname: a\ndescription: "[${GOOD_DESC}]"\n---\n`),
-    (root) => assert.equal(run(root).status, 0),
-  );
-});
-
-test('duplicate keys are rejected', () => {
-  expectFail(
-    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\ndescription: ${GOOD_DESC} again\n---\n`),
-    'key "description": duplicate key',
-  );
-  expectFail(
-    (root) => skill(root, 'a', `---\nname: a\nname: a\ndescription: ${GOOD_DESC}\n---\n`),
-    'key "name": duplicate key',
-  );
-});
-
-test('unquoted value containing ": " is rejected with a quoting hint', () => {
-  expectFail(
-    (root) => skill(root, 'a', '---\nname: a\ndescription: Use this skill when: writing articles.\n---\n'),
-    'wrap the value in quotes',
-  );
-  expectFail(
-    (root) => skill(root, 'a', '---\nname: a\ndescription: A long enough description ending with colon:\n---\n'),
-    'wrap the value in quotes',
-  );
-  // Quoted, or colon without following space, is fine.
-  withTree(
-    (root) => {
-      skill(root, 'a', '---\nname: a\ndescription: "Use this skill when: writing articles."\n---\n');
-      skill(root, 'b', '---\nname: b\ndescription: See https://example.com/path for the details\n---\n');
-    },
-    (root) => assert.equal(run(root).status, 0),
-  );
-});
-
-test('indentationless list on other keys is ignored, rejected on name/description', () => {
-  withTree(
-    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\nallowed-tools:\n- Read\n- Write\nversion: 1.0.0\n---\n`),
-    (root) => assert.equal(run(root).status, 0),
-  );
-  expectFail(
-    (root) => skill(root, 'a', `---\nname: a\ndescription:\n- one\n- two\n---\n`),
-    'key "description": multiline values are not supported',
-  );
-});
-
-test('anchors, aliases, tags and reserved indicators are rejected unquoted', () => {
-  const msg = 'YAML anchors, aliases and tags are not supported';
-  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: &abcdefghijklmnopqrst short\n---\n'), msg);
-  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: *missing_anchor_long_enough\n---\n'), msg);
-  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: !!str a sufficiently long description\n---\n'), msg);
-  expectFail((root) => skill(root, 'a', '---\nname: &x a\ndescription: ' + GOOD_DESC + '\n---\n'), msg);
-  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: @' + GOOD_DESC + '\n---\n'), msg);
-  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: %' + GOOD_DESC + '\n---\n'), msg);
-  expectFail((root) => skill(root, 'a', '---\nname: a\ndescription: `' + GOOD_DESC + '\n---\n'), msg);
-});
-
 test('quoted value starting with & passes', () => {
   withTree(
     (root) => skill(root, 'a', `---\nname: a\ndescription: "&${GOOD_DESC}"\n---\n`),
@@ -306,7 +211,94 @@ test('quoted value starting with & passes', () => {
   );
 });
 
-test('unterminated quote and trailing junk after quote are rejected', () => {
-  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\n---\n`), 'unterminated quoted string');
-  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}" junk\n---\n`), 'unexpected text after quoted value');
+
+test('description starting with ] is rejected as invalid YAML', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: ]this is long enough to pass\n---\n'),
+    'invalid YAML frontmatter',
+  );
+});
+
+test('numeric description is rejected as non-string', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: 12345678901234567890\n---\n'),
+    'description must be a string',
+  );
+});
+
+test('list or mapping description is rejected as non-string', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: [a sufficiently long description]\n---\n'),
+    'description must be a string',
+  );
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription:\n- one\n- two\n---\n'),
+    'description must be a string',
+  );
+});
+
+test('non-string name is rejected', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: 123\ndescription: ${GOOD_DESC}\n---\n`),
+    'name must be a string',
+  );
+});
+
+test('folded multiline description is counted by its parsed length', () => {
+  // Parsed: "aaaaaaaaaa bbbbbbbbbb" = 21 chars across two source lines.
+  withTree(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: >-\n  aaaaaaaaaa\n  bbbbbbbbbb\n---\n'),
+    (root) => assert.equal(run(root).status, 0),
+  );
+  // Plain multiline: "aaaaaaaaa bbbbbbbbb" = 19 chars, fails.
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription:\n  aaaaaaaaa\n  bbbbbbbbb\n---\n'),
+    'description length 19',
+  );
+  // Block literal keeps the newline, so 10 + 1 + 10 = 21 passes with |-.
+  withTree(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: |-\n  aaaaaaaaaa\n  bbbbbbbbbb\n---\n'),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('allowed-tools list without indentation is ignored', () => {
+  withTree(
+    (root) =>
+      skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\nallowed-tools:\n- Read\n- Write\nversion: 1.0.0\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('duplicate keys are rejected', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: ${GOOD_DESC}\ndescription: ${GOOD_DESC} again\n---\n`),
+    'Map keys must be unique',
+  );
+});
+
+test('anchor and alias problems are rejected', () => {
+  // Undefined alias.
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: *missing_anchor_long_enough\n---\n'),
+    'Unresolved alias',
+  );
+  // An anchor is valid YAML; the anchored value (5 chars) is what gets measured.
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: &abcdefghijklmnopqrst short\n---\n'),
+    'description length 5',
+  );
+});
+
+test('malformed YAML (unquoted ": ", bad quote, trailing junk) is rejected', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: Use this skill when: writing articles.\n---\n'),
+    'invalid YAML frontmatter',
+  );
+  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}\n---\n`), 'invalid YAML frontmatter');
+  expectFail((root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC}" junk\n---\n`), 'invalid YAML frontmatter');
+});
+
+test('frontmatter that is not a mapping is rejected', () => {
+  expectFail((root) => skill(root, 'a', '---\n- one\n- two\n---\n'), 'frontmatter must be a YAML mapping');
 });
