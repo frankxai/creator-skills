@@ -29,6 +29,22 @@ function unquote(v) {
   return t;
 }
 
+// Strip a YAML trailing comment: a # at the start or preceded by whitespace,
+// ignoring any # inside a leading single- or double-quoted string.
+function stripComment(v) {
+  const t = v.trim();
+  let from = 0;
+  const q = t[0];
+  if (q === '"' || q === "'") {
+    const close = t.indexOf(q, 1);
+    if (close !== -1) from = close + 1;
+  }
+  for (let i = from; i < t.length; i++) {
+    if (t[i] === '#' && (i === 0 || /\s/.test(t[i - 1]))) return t.slice(0, i).trim();
+  }
+  return t;
+}
+
 // Returns { fields } or { error }.
 export function parseFrontmatter(raw) {
   const text = raw.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
@@ -40,7 +56,8 @@ export function parseFrontmatter(raw) {
   for (let i = 1; i < end; i++) {
     const m = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(lines[i]);
     if (!m) continue;
-    const [, key, rest] = m;
+    const key = m[1];
+    const rest = stripComment(m[2]);
     if (/^[>|][+-]?$/.test(rest.trim())) {
       const block = [];
       while (i + 1 < end && (/^\s/.test(lines[i + 1]) || lines[i + 1] === '')) block.push(lines[++i].trim());

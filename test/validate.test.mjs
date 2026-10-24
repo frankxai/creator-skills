@@ -114,3 +114,42 @@ test('missing skills root exits 1', () => {
 test('description of 19 chars exits 1', () => {
   expectFail((root) => skill(root, 'a', fm('a', 'x'.repeat(19))), 'description length 19');
 });
+
+test('comment-only description exits 1 as missing', () => {
+  expectFail(
+    (root) => skill(root, 'a', '---\nname: a\ndescription: # a sufficiently long comment here\n---\n'),
+    'missing description',
+  );
+});
+
+test('trailing comment on name and description is ignored', () => {
+  withTree(
+    (root) => skill(root, 'alpha', `---\nname: alpha # note\ndescription: ${GOOD_DESC} # trailing\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('trailing comment does not count toward description length', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: short # ${'x'.repeat(50)}\n---\n`),
+    'description length 5',
+  );
+});
+
+test('hash inside a quoted string is preserved', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: "ab # cd" # real comment\n---\n`),
+    'description length 7',
+  );
+  withTree(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: "${GOOD_DESC} issue #12 fixed"\n---\n`),
+    (root) => assert.equal(run(root).status, 0),
+  );
+});
+
+test('hash without preceding whitespace is part of the value', () => {
+  expectFail(
+    (root) => skill(root, 'a', `---\nname: a\ndescription: abc#def\n---\n`),
+    'description length 7',
+  );
+});
