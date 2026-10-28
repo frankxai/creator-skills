@@ -9,6 +9,12 @@ You subscribed to five AI tools and still can't ship a video a day. The missing 
 npx skills add frankxai/creator-skills
 ```
 
+Claude Code plugin install, inside a session:
+
+```sh
+/plugin install starlight-creator --marketplace frankxai/creator-skills
+```
+
 This **is** the ACOS public skill pack. Contract: [`SKILLPACK.md`](./SKILLPACK.md). Do not install `agentic-creator-os` or awesome-* as a pack.
 
 For Codex, use the same `npx skills add frankxai/creator-skills` command and select Codex when prompted. Codex plugins use a separate marketplace flow; this repository is a skills pack.
