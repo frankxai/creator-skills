@@ -12,7 +12,8 @@ npx skills add frankxai/creator-skills
 Claude Code plugin install, inside a session:
 
 ```sh
-/plugin install starlight-creator --marketplace frankxai/creator-skills
+/plugin marketplace add frankxai/creator-skills
+/plugin install starlight-creator@frankx-creator-skills
 ```
 
 This **is** the ACOS public skill pack. Contract: [`SKILLPACK.md`](./SKILLPACK.md). Do not install `agentic-creator-os` or awesome-* as a pack.
