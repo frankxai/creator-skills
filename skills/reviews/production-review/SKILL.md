@@ -1,7 +1,8 @@
 ---
 name: production-review
 description: Use when the user asks to review or pressure-test a video / content plan BEFORE generating it — triggers include "review my video plan", "is this worth generating", "pre-flight my shoot", "grill my content idea", "will this convert", "should I spend credits on this". Grills the brief for hook, destination-fit, identity-consistency, and cost, then hands a go / rework verdict to the video-gen router.
-version: 1.0.0
+metadata:
+  version: "1.0.0"
 ---
 
 # Production Review
