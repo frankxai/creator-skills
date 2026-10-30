@@ -1,7 +1,8 @@
 ---
 name: video-engine-routing
 description: Decide WHERE video/image generation runs when cost, volume, or capability forces a choice - subscription credits vs pay-per-use APIs vs cloud ComfyUI. Use when asked "which video engine should I use", "is Higgsfield/fal/RunComfy worth it", "credits ran out", "cheapest way to generate N clips", "do I need ComfyUI", "should I run this locally", or when the video-gen skill escalates a budget or capability ceiling. Contains the pricing table, graduation triggers, and the never-local rule for iGPU machines.
-version: 1.0.0
+metadata:
+  version: "1.0.0"
 ---
 
 # video-engine-routing — when you outgrow your default engine
