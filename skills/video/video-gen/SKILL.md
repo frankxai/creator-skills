@@ -1,7 +1,8 @@
 ---
 name: video-gen
 description: Route any image or video generation request to the right engine and pipeline. Use when asked to "make a video", "generate an image", "create b-roll", "make a video ad", "animate this photo", "clip for socials", "product shot", "talking head", "faceless video", "YouTube short", "UGC video", or any multi-step visual content request. Classifies intent by deliverable, identity consistency, and destination, dispatches to installed engine skills (Higgsfield, Nano Banana, Grok Imagine), then chains assembly (HyperFrames) and editing/publishing (Descript). For pricing or capability ceilings, hand off to video-engine-routing.
-version: 1.0.0
+metadata:
+  version: "1.0.0"
 ---
 
 # video-gen — the routing brain for visual content

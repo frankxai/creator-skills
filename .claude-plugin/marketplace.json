@@ -1,0 +1,15 @@
+{
+  "name": "frankx-creator-skills",
+  "owner": {
+    "name": "Frank Riemer",
+    "url": "https://frankx.ai"
+  },
+  "description": "Creator skills for video, music, image direction and brand voice.",
+  "plugins": [
+    {
+      "name": "starlight-creator",
+      "source": "./",
+      "description": "Creative production routing for video, music prompts, image direction and brand voice."
+    }
+  ]
+}

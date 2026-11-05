@@ -1,7 +1,8 @@
 ---
 name: suno-prompt-architect
 description: Expert Suno AI prompt engineering for professional music creation. Use this skill when creating Suno prompts for any AI-generated music that needs commercial quality.
-version: 2.0.0
+metadata:
+  version: "2.0.0"
 ---
 
 # Suno Prompt Architect
