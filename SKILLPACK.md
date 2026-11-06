@@ -9,7 +9,7 @@ npx skills add frankxai/creator-skills
 
 Already on skills.sh: https://www.skills.sh/frankxai/creator-skills
 
-## Include (all 8)
+## Include (all 11)
 
 | Skill | Lane |
 | --- | --- |
@@ -21,6 +21,9 @@ Already on skills.sh: https://www.skills.sh/frankxai/creator-skills
 | `acos-visual-gen` | images |
 | `arcanea-book-cover` | images (genre covers; not the Arcanea world pack) |
 | `brand-voice` | brand |
+| `creator-launch` | growth (launch to your own audience) |
+| `short-form-hooks` | growth (first 2 seconds of vertical video) |
+| `youtube-packaging` | growth (title, thumbnail, first 30 seconds) |
 
 ## Exclude
 
