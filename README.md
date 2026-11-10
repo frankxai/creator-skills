@@ -39,14 +39,18 @@ Two kinds of skills. **User-invoked** ones you run deliberately — a review you
 | [suno-ai-mastery](skills/music/suno-ai-mastery/SKILL.md) | music | model-invoked | advanced Suno composition: genre systems, structure, vocals |
 | [acos-visual-gen](skills/images/acos-visual-gen/SKILL.md) | images | model-invoked | research-grounded infographics and educational visuals |
 | [arcanea-book-cover](skills/images/arcanea-book-cover/SKILL.md) | images | model-invoked | book covers designed from tension, emotion, and genre |
+| [creator-launch](skills/growth/creator-launch/SKILL.md) | growth | model-invoked | launching a course, pack or product to your own audience: one offer, a waitlist, a gift, a founding window |
+| [short-form-hooks](skills/growth/short-form-hooks/SKILL.md) | growth | model-invoked | writing or testing the first two seconds of a Reel, TikTok or Short |
+| [youtube-packaging](skills/growth/youtube-packaging/SKILL.md) | growth | model-invoked | choosing a YouTube title, thumbnail brief and first 30 seconds as one promise |
 | [brand-voice](skills/brand/brand-voice/SKILL.md) | brand | model-invoked | writing or reviewing anything that must sound like YOUR brand |
 
 ## How the video lane works
 
 `video-gen` is a router: it classifies the request (deliverable × identity-consistency ×
-destination) and dispatches to whichever engines you have installed — Higgsfield CLI skills
-for generation, Nano Banana for reference edits, HyperFrames for HTML compositions and
-captions, Descript for text-based editing. Those engine skills ship from their vendors;
+destination) and dispatches to whichever engines you have installed — an all-in-one engine
+such as the Higgsfield CLI skills, or another image or video engine, for generation; Nano
+Banana for reference edits; HyperFrames for HTML compositions and captions; Descript for
+text-based editing. Those engine skills ship from their vendors;
 this repo deliberately does not republish them. Install the engines you pay for, and the
 router uses what it finds.
 

@@ -4,7 +4,8 @@ Public skills catalog. Everything here ships to strangers' machines via `npx ski
 
 ## Layout
 
-- `skills/<category>/<name>/SKILL.md` — one skill per folder. Categories: video, music, images, brand.
+- `skills/<category>/<name>/SKILL.md` — one skill per folder. Categories: video, music, images, brand, reviews, growth.
+- Growth skills plan and stage only: they never post, send, schedule, spend or set prices, and they tell the agent to fetch platform facts from official pages with a read date instead of hard-coding them. Each ships `evals/evals.json`.
 - Supporting files live beside the SKILL.md (`references/`, `*.json`). No nested skill directories.
 
 ## Skill rules

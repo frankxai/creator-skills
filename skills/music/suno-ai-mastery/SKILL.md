@@ -10,6 +10,57 @@ version: 3.0.0
 
 Suno changes quickly. Do not hardcode an old model as current. When operating the UI, capture it and select the newest stable model available to the logged-in account unless the user requests another. Treat exact character limits and feature names as UI facts to verify, not memory.
 
+Suno, Atlas Cloud, and MuAPI are paid services. Use Suno's product UI for its full editing suite. When API automation is needed, Atlas Cloud and MuAPI are optional routes to Suno generation; they are never required for prompt design. Confirm the model and price in the live provider catalog before submitting, and get user approval before any paid generation.
+
+### Optional MuAPI Generation
+
+The sibling `muapi_music.py` helper maps a song idea and style into MuAPI's asynchronous Suno API. It is dry-run by default:
+
+```bash
+python3 <skill-directory>/muapi_music.py \
+  "Late-night city lo-fi piano with rain" \
+  --style "lo-fi hip-hop, mellow piano" \
+  --instrumental
+```
+
+Review the JSON payload first. To make exactly one paid submission, set `MUAPI_API_KEY` and add `--submit`. The helper never retries the generation POST; it only performs bounded GET polling for the returned request.
+
+```bash
+python3 <skill-directory>/muapi_music.py \
+  "A hopeful song about finding your way home" \
+  --style "indie pop, warm guitar, layered vocals" \
+  --title "Way Home" \
+  --submit
+```
+
+Use the live MuAPI model schema before generation. The current catalog lists this generation at $0.09 per request; confirm the price before submission. The completed result includes generated audio in `outputs`.
+
+### Optional Atlas Cloud Generation
+
+The sibling `atlas_music.py` helper maps this skill's inspiration or custom-lyrics prompt into Atlas Cloud's asynchronous audio API. It is dry-run by default:
+
+```bash
+python3 <skill-directory>/atlas_music.py \
+  "Late-night city lo-fi piano with rain" \
+  --instrumental
+```
+
+Review the JSON payload first. To make exactly one paid submission, set `ATLASCLOUD_API_KEY` and add `--submit`. The helper never retries the generation POST; it only performs bounded GET polling for the returned prediction.
+
+```bash
+python3 <skill-directory>/atlas_music.py \
+  "[Verse]\nNeon streets on a rainy night\n[Chorus]\nDrive on, drive on" \
+  --custom \
+  --title "Midnight Drive" \
+  --style "synthwave, female vocal, cinematic" \
+  --vocal-gender Female \
+  --submit
+```
+
+Use the live model catalog and schema rather than assuming model availability. For `suno/chirp-v4-5-all`, inspiration mode uses the prompt as a song description, while `--custom` uses it as lyrics. A completed prediction returns audio URLs in `outputs`.
+
+---
+
 ## Translate intent into seven musical layers
 
 1. **Form:** song length, section sequence, bar/energy proportions.
