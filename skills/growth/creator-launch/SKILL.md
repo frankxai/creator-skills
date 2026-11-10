@@ -1,6 +1,6 @@
 ---
 name: creator-launch
-description: Use when a creator wants to launch something they made to their own audience: a course, template, preset pack, ebook, community, paid newsletter, coaching slot or digital product. Triggers include "creator launch", "launch my course", "launch my product to my followers", "pre-launch", "waitlist", "founding members", "how do I sell this to my audience", "launch plan for my channel". Builds one offer, one waitlist, one gift and one founding window, then stages the announcement for the creator to post. Plans and drafts only; the creator publishes, sends and sets the price.
+description: "Use when a creator wants to launch something they made to their own audience: a course, template, preset pack, ebook, community, paid newsletter, coaching slot or digital product. Triggers include \"creator launch\", \"launch my course\", \"launch my product to my followers\", \"pre-launch\", \"waitlist\", \"founding members\", \"how do I sell this to my audience\", \"launch plan for my channel\". Builds one offer, one waitlist, one gift and one founding window, then stages the announcement for the creator to post. Plans and drafts only; the creator publishes, sends and sets the price."
 version: 0.1.0
 argument-hint: "[what you are launching] [where your audience is]"
 ---

@@ -1,6 +1,6 @@
 ---
 name: youtube-packaging
-description: Use when deciding the title, thumbnail and opening of a long-form YouTube video, before or after filming. Triggers include "YouTube title", "thumbnail idea", "packaging", "low CTR", "nobody clicks my videos", "people click then leave", "first 30 seconds", "video intro", "A/B test my thumbnail", "title and thumbnail ideas". Treats the title, the thumbnail brief and the first 30 seconds as one promise, written together. Tool-neutral: the thumbnail is a brief any designer, photo or image tool can execute. Includes a test plan with rules set in advance.
+description: "Use when deciding the title, thumbnail and opening of a long-form YouTube video, before or after filming. Triggers include \"YouTube title\", \"thumbnail idea\", \"packaging\", \"low CTR\", \"nobody clicks my videos\", \"people click then leave\", \"first 30 seconds\", \"video intro\", \"A/B test my thumbnail\", \"title and thumbnail ideas\". Treats the title, the thumbnail brief and the first 30 seconds as one promise, written together. Tool-neutral: the thumbnail is a brief any designer, photo or image tool can execute. Includes a test plan with rules set in advance."
 version: 0.1.0
 argument-hint: "[video topic or script] [channel niche]"
 ---

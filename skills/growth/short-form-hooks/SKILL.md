@@ -1,6 +1,6 @@
 ---
 name: short-form-hooks
-description: Use when writing, fixing or testing the opening of a short vertical video: TikTok, Instagram Reels, YouTube Shorts, Facebook Reels or similar. Triggers include "hook", "first 2 seconds", "first three seconds", "people swipe away", "scroll-stopping opening", "my Reels die at second 2", "write hooks for this video", "test hooks", "improve retention on Shorts". Works with any editing or generation tool. Produces hook options across picture, sound and on-screen text, picks the strongest, and writes a test plan with decision rules set before posting.
+description: "Use when writing, fixing or testing the opening of a short vertical video: TikTok, Instagram Reels, YouTube Shorts, Facebook Reels or similar. Triggers include \"hook\", \"first 2 seconds\", \"first three seconds\", \"people swipe away\", \"scroll-stopping opening\", \"my Reels die at second 2\", \"write hooks for this video\", \"test hooks\", \"improve retention on Shorts\". Works with any editing or generation tool. Produces hook options across picture, sound and on-screen text, picks the strongest, and writes a test plan with decision rules set before posting."
 version: 0.1.0
 argument-hint: "[what the video is about] [platform]"
 ---
